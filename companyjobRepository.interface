@@ -15,11 +15,100 @@ public interface companyjobRepository {
 //    String [] industry_area={"null"};//行业领域
 //    String [] inancing_stage={"null"};//融资阶段
 
-    //此句使用动态sql
+    //使用动态sql,@SelectProvider注解用于生成查询用的sql语句，有别于@Select注解，@SelectProvide指定一个Class及其方法，
+    //并且通过调用Class上的这个方法来获得sql语句。在我们这个例子中，获取查询sql的方法是SqlProvider.selectUser。
     @SelectProvider(type = companyjobSqlProvider.class, method = "sumSearch")
         List<companyjob> get_items(get_items_model get_items_model);
+    @SelectProvider(type = companyjobSqlProvider.class, method = "sumSearchCount")
 
+    Integer getCount(get_items_model get_items_model);
 
   
+  
+ @Select("SELECT id,title,address,job,openid,treatment,requirement,content," +
+        "time,phone,date,datetime,salary_month_limit_start,salary_month_limit_end,salary,location,education," +
+        "work_experience,job_nature,industry_area,inancing_stage,shared_max,shared,look,total_fee FROM companyjob WHERE id=#{id} "  )
+    companyjob FindByBlogID_2(@Param("id") int id);
+   
+    @Insert("   INSERT INTO companyjob(title,address,job,openid,requirement," +
+            "                     time,phone,date,datetime,salary_month_limit_start,salary_month_limit_end,location,education," +
+            "                  work_experience,job_nature,industry_area,inancing_stage) VALUES (#{title},#{address},#{job}," +
+            "        #{openid},#{requirement},#{time},#{phone},#{date},#{datetime},#{salary_month_limit_start}" +
+            ",#{salary_month_limit_end},#{location},#{education},#{work_experience},#{job_nature},#{industry_area},#{inancing_stage})")
 
+    int insertBlog(companyjob companyjob);
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    @Update("UPDATE companyjob SET title=#{title},address=#{address},job=#{job}," +
+            "openid=#{openid},requirement=#{requirement},time=#{time},phone=#{phone},date=#{date}," +
+            "datetime=#{datetime},salary_month_limit_start=#{salary_month_limit_start}," +
+            " salary_month_limit_end=#{salary_month_limit_end},location=#{location},education=#{education},work_experience=#{work_experience}," +
+            "job_nature=#{job_nature},industry_area=#{industry_area},inancing_stage=#{inancing_stage} WHERE id=#{id}")
+
+    int update_items(companyjob companyjob);
+    @Select(" SELECT id,title,address,job,openid,treatment,requirement,content," +
+            "time,phone,date,datetime,salary,shared_max,shared,look,total_fee FROM companyjob WHERE leader= #{leader} AND openid=#{openid} " +
+            "        LIMIT #{start} ,#{lineSize}")
+    List<companyjob> findByOpenid(@Param("openid") String openid, @Param("leader") String leader, @Param("start") int start, @Param("lineSize") int lineSize);
+    @Select(" SELECT id,title,address,job,openid,treatment,requirement,content," +
+            "time,phone,date,datetime,salary,shared_max,shared,look,total_fee FROM companyjob WHERE leader= #{leader}  " +
+            "        LIMIT #{start} ,#{lineSize}")
+    List<companyjob> findByRootOpenid(@Param("openid") String openid, @Param("leader") String leader, @Param("start") int start, @Param("lineSize") int lineSize);
+    @Select(" SELECT id,title,address,job,openid,treatment,requirement,content," +
+            "time,phone,date,datetime,salary,shared_max,shared,look,total_fee FROM companyjob WHERE leader= #{leader} AND openid=#{openid} AND total_fee>0" +
+            "        LIMIT #{start} ,#{lineSize}")
+    List<companyjob> get_sent_hongbao_itemsByOpenid(@Param("openid") String openid, @Param("leader") String leader, @Param("start") int start, @Param("lineSize") int lineSize);
+    @Select("SELECT id,title,address,job,openid,treatment,requirement,content,time,phone,datetime,date,salary,shared_max,shared,look,total_fee FROM companyjob WHERE   id=#{id}")
+    List<companyjob> findId(@Param("id") int id);
+    @Update("  UPDATE companyjob SET title=#{title}," +
+            "        address=#{address}," +
+            "        job=#{job}," +
+            "        treatment=#{treatment}," +
+            "        requirement=#{requirement}," +
+            "        content=#{content}," +
+            "        phone=#{phone}" +
+            "        ,date=#{date},datetime=#{datetime},salary_month_start=#{salary_month_start}" +
+            ",salary_month_end=#{salary_month_end},salary_month_start=#{salary_month_start}" +
+            ",salary_month_start=#{salary_month_start}" +
+            ",location=#{location},education=#{education},work_experience=#{work_experience},job_nature=#{job_nature}" +
+            ",industry_area=#{industry_area},inancing_stage=#{inancing_stage} WHERE id=#{id}")
+    int updateById(companyjob companyjob);
+    @Select("SELECT COUNT(*) FROM companyjob" +
+            "        WHERE ${column} = #{KeyWord} AND leader = #{leader}")
+    Integer getAllCount(@Param("column") String column, @Param("KeyWord") String KeyWord, @Param("leader") String leader);
+    @Select("SELECT COUNT(*) FROM companyjob" +
+            "        WHERE  leader = #{leader}")
+    Integer getAllRootCount(@Param("leader") String leader);
+    @Select("SELECT COUNT(*) FROM companyjob" +
+            "        WHERE ${column} = #{KeyWord} AND leader = #{leader} AND  total_fee>0")
+    Integer getAllCount_sent_hongbao(@Param("column") String column, @Param("KeyWord") String KeyWord, @Param("leader") String leader);
+   
+
+    @Select("SELECT useremail FROM companyjob WHERE useremail=#{useremail} AND leader= #{leader}")
+    List<baoming> findByEmail(@Param("useremail") String useremail, @Param("leader") String leader);
+    @Update("update   companyjob set leader=#{leader}  WHERE id=#{id}")
+    int deleteById(@Param("leader") String leader, @Param("id") int id);
+
+    @Update("Update companyjob set companyjob.look=companyjob.look+1 where id=#{blogid}")
+    int  increaseLook(@Param("blogid") int blogid);
+
+    @Update("Update companyjob set companyjob.shared=companyjob.shared+1 where id=#{blogid}")
+    int increaseShared(@Param("blogid") int blogid);
+
+    @Select("SELECT total_fee from companyjob where id=#{blogid}")
+    double total_fee(@Param("blogid") int blogid);
+
+    @Select("SELECT shared from companyjob where id=#{blogid}")
+    int shared(@Param("blogid") int blogid);
+
+    @Select("SELECT shared_max from companyjob where id =#{blogid}")
+    int shared_max(@Param("blogid") int blogid);
+
+    @Update("UPDATE companyjob SET total_fee=total_fee+#{total_fee},shared_max=shared_max+#{shared_max}" +
+            " where id=#{blogid}")
+    int input_money(@Param("blogid")int blogid,
+                              @Param("total_fee") double total_fee,
+                              @Param("shared_max")int shared_max);
+    @Select("Select * from companyjob where openid=#{openid} and leader='SUCCESS' and total_fee>0 order by companyjob.id desc " +
+            "LIMIT #{start} ,#{lineSize} ")
+    List<companyjob> get_leader_items(@Param("openid")String openid,@Param("start")int start,@Param("lineSize")int lineSize);
 }
