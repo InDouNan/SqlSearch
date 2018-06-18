@@ -1,0 +1,164 @@
+import com.example.demo.model.get_items_model;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class companyjobSqlProvider {
+//    String []work_experience={"null"};//工作经验
+//    int [] salary_month_limit={0,100000};//月薪范围
+//    String []job_nature={"null"};//工作性质
+//    String [] industry_area={"null"};//行业领域
+//    String [] inancing_stage={"null"};//融资阶段
+/*
+
+将数组拆分。动态组成sql进行搜索
+
+*/
+    public String search;
+    public String searchlocation="OR location LIKE ";
+    public String searcheducation="OR education LIKE ";
+    public String searchwork_experience="OR work_experience LIKE ";
+    public String searchjob_nature="OR job_nature LIKE ";
+    public String searchindustry_area="OR industry_area LIKE ";
+    public String searchinancing_stage="OR inancing_stage LIKE ";
+    public String orderby=" order by id desc limit ";
+    String sumString;
+    public  void search_word(get_items_model get_items_model){
+
+        this.search+=
+                "AND (job LIKE \'%"+get_items_model.getSearch_word()+"%\' OR " +
+                        "treatment LIKE  \'%"+get_items_model.getSearch_word()+"%\'   " +
+                "OR requirement LIKE \'%"+get_items_model.getSearch_word()+"%\'  " +
+
+                "OR content LIKE \'%"+get_items_model.getSearch_word()+"%\'" +
+                        " OR time LIKE \'%"+get_items_model.getSearch_word()+"%\' " +
+                " OR location LIKE \'%"+get_items_model.getSearch_word()+"%\'" +
+                        " OR education LIKE \'%"+get_items_model.getSearch_word()+"%\'" +
+                " OR work_experience LIKE \'%"+get_items_model.getSearch_word()+"%\'" +
+                        " OR job_nature LIKE \'%"+get_items_model.getSearch_word()+"%\'" +
+                " OR industry_area LIKE \'%"+get_items_model.getSearch_word()+"%\'" +
+                        " OR inancing_stage LIKE \'%"+get_items_model.getSearch_word()+"%\') ";
+    }
+        public String sumSearchCount(get_items_model get_items_model){
+
+        this.search="SELECT COUNT(*) FROM companyjob WHERE leader= \'SUCCESS\' " ;
+            if (get_items_model.getSearch_word()!=null&&get_items_model.getSearch_word().length()!=0)
+        search_word(get_items_model);
+        sumString=search;
+        if (get_items_model.getLocation()!=null&&get_items_model.getLocation().length!=0)
+            sumString+=location(get_items_model.getLocation());
+        if (get_items_model.getEducation()!=null&&get_items_model.getEducation().length!=0)
+            sumString+=education(get_items_model.getEducation());
+        if (get_items_model.getWork_experience()!=null&&get_items_model.getWork_experience().length!=0)
+            sumString+=work_experience(get_items_model.getWork_experience());
+        if (get_items_model.getJob_nature()!=null&&get_items_model.getJob_nature().length!=0)
+            sumString+=job_nature(get_items_model.getJob_nature());
+        if (get_items_model.getInancing_stage()!=null&&get_items_model.getInancing_stage().length!=0)
+            sumString+=inancing_stage(get_items_model.getInancing_stage());
+        if (get_items_model.getIndustry_area()!=null&&get_items_model.getIndustry_area().length!=0)
+            sumString+=industry_area(get_items_model.getIndustry_area());
+        sumString+=" AND salary_month_limit_start >= "+get_items_model.getSalary_month_limit()[0]+" AND " +
+                " salary_month_limit_end <="+get_items_model.getSalary_month_limit()[1];
+
+        System.out.println(sumString);
+        return sumString;
+    }
+public String sumSearch(get_items_model get_items_model){
+            if (get_items_model.getOrderby().length()!=0&&get_items_model.getOrderby().equals("hongbao"))
+                this.orderby=" order by (shared_max-shared) desc limit ";
+    this.search="SELECT id,title,address,job,openid,treatment,requirement,content," +
+            "time,phone,date,datetime,salary_month_limit_start,salary_month_limit_end,salary,location,education," +
+            "work_experience,job_nature,industry_area,inancing_stage,shared_max,shared,look,total_fee FROM companyjob WHERE leader= \'SUCCESS\' " ;
+    if (get_items_model.getSearch_word()!=null&&get_items_model.getSearch_word().length()!= 0)
+        search_word(get_items_model);
+
+    sumString=search;
+    if (get_items_model.getLocation() != null && get_items_model.getLocation().length != 0)
+        sumString+=location(get_items_model.getLocation());
+
+    if (get_items_model.getEducation()!=null&&get_items_model.getEducation().length!=0)
+        sumString+=education(get_items_model.getEducation());
+
+    if (get_items_model.getWork_experience()!=null&&get_items_model.getWork_experience().length!=0)
+        sumString+=work_experience(get_items_model.getWork_experience());
+
+    if (get_items_model.getJob_nature()!=null&&get_items_model.getJob_nature().length!=0)
+        sumString+=job_nature(get_items_model.getJob_nature());
+
+    if (get_items_model.getInancing_stage()!=null&&get_items_model.getInancing_stage().length!=0)
+        sumString+=inancing_stage(get_items_model.getInancing_stage());
+
+    if (get_items_model.getIndustry_area()!=null&&get_items_model.getIndustry_area().length!=0)
+        sumString+=industry_area(get_items_model.getIndustry_area());
+
+    sumString+=" AND salary_month_limit_start >= "+get_items_model.getSalary_month_limit()[0]+" AND " +
+            " salary_month_limit_end <="+get_items_model.getSalary_month_limit()[1];
+
+    sumString+=orderby+get_items_model.getPage_item_id()*get_items_model.getPage_items_num()+","+
+            get_items_model.getPage_items_num();
+
+    System.out.println("sumstring"+sumString);
+
+    return sumString;
+}
+    public String inancing_stage (String inancing_stage[]){
+        if (inancing_stage[0]!=null);
+        sumString="AND (location LIKE "+" \'%"+inancing_stage[0]+"%\'";
+        for (int i=1;i<inancing_stage.length;i++){
+            if (inancing_stage[i]!=null);
+            sumString+=searchinancing_stage+" \'%"+inancing_stage[i]+"%\'";
+        }
+        sumString+=")";
+        return sumString;
+    }
+    public String industry_area (String industry_area[]){
+        if (industry_area[0]!=null);
+        sumString="AND (location LIKE "+" \'%"+industry_area[0]+"%\'";
+        for (int i=1;i<industry_area.length;i++){
+            if (industry_area[i]!=null);
+            sumString+=searchindustry_area+" \'%"+industry_area[i]+"%\'";
+        }
+        sumString+=")";
+        return sumString;
+    }
+    public String job_nature (String job_nature[]){
+        if (job_nature[0]!=null);
+        sumString="AND (location LIKE "+" \'%"+job_nature[0]+"%\'";
+        for (int i=1;i<job_nature.length;i++){
+            if (job_nature[i]!=null);
+            sumString+=searchjob_nature+" \'%"+job_nature[i]+"%\'";
+        }
+        sumString+=")";
+        return sumString;
+    }
+    public String location (String location[]){
+        if (location[0]!=null);
+          sumString="AND (location LIKE "+" \'%"+location[0]+"%\'";
+        for (int i=1;i<location.length;i++){
+          if (location[i]!=null);
+           sumString+=searchlocation+" \'%"+location[i]+"%\'";
+        }
+        sumString+=")";
+        return sumString;
+    }
+    public String education (String education[]){
+        if (education[0]!=null);
+        sumString="AND (education LIKE "+" \'%"+education[0]+"%\'";
+        for (int i=1;i<education.length;i++){
+            if (education[i]!=null);
+            sumString+=searcheducation+" \'%"+education[i]+"%\'";
+        }
+        sumString+=")";
+        return sumString;
+    }
+    public String work_experience (String work_experience[]){
+        if (work_experience[0]!=null);
+        sumString="AND (education LIKE "+" \'%"+work_experience[0]+"%\'";
+        for (int i=1;i<work_experience.length;i++){
+            if (work_experience[i]!=null);
+            sumString+=searchwork_experience+" \'%"+work_experience[i]+"%\'";
+        }
+        sumString+=")";
+        return sumString;
+    }
+}
