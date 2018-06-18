@@ -1,0 +1,25 @@
+import com.example.demo.domain.sqlProvider.companyjobSqlProvider;
+import com.example.demo.model.get_items_model;
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
+@Repository
+@Mapper
+public interface companyjobRepository {
+//    String []work_experience={"null"};//工作经验
+//    int [] salary_month_limit={0,100000};//月薪范围
+//    String []job_nature={"null"};//工作性质
+//    String [] industry_area={"null"};//行业领域
+//    String [] inancing_stage={"null"};//融资阶段
+
+    //此句使用动态sql
+    @SelectProvider(type = companyjobSqlProvider.class, method = "sumSearch")
+        List<companyjob> get_items(get_items_model get_items_model);
+
+
+  
+
+}
