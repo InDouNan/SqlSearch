@@ -1,0 +1,110 @@
+import com.alibaba.fastjson.JSONArray;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+@Component
+public class get_items_model {
+
+    int page_items_num=6;
+    int page_item_id=0;
+    String search_word;//搜索词
+    String []education;//文凭
+    String []location;//工作地点 省 市 区
+    String []work_experience;//工作经验
+    int [] salary_month_limit={0,100000};//月薪范围
+    String []job_nature;//工作性质
+    String [] industry_area;//行业领域
+    String [] inancing_stage;//融资阶段
+    String orderby="";
+
+    public String getOrderby() {
+        return orderby;
+    }
+
+    public void setOrderby(String orderby) {
+        this.orderby = orderby;
+    }
+
+    public  String[] getEducation() {
+        return education;
+    }
+
+    public  String[] getInancing_stage() {
+        return inancing_stage;
+    }
+
+    public  String[] getIndustry_area() {
+        return industry_area;
+    }
+
+    public  String[] getJob_nature() {
+        return job_nature;
+    }
+
+    public  String[] getLocation() {
+        return location;
+    }
+
+    public int[] getSalary_month_limit() {
+        return salary_month_limit;
+    }
+
+    public  String[] getWork_experience() {
+        return work_experience;
+    }
+
+    public void setEducation(String[] education) {
+        this.education = education;
+    }
+
+    public void setInancing_stage( String[] inancing_stage) {
+        this.inancing_stage = inancing_stage;
+    }
+
+    public void setIndustry_area( String[] industry_area) {
+        this.industry_area = industry_area;
+    }
+
+    public void setJob_nature( String[] job_nature) {
+        this.job_nature = job_nature;
+    }
+
+    public void setLocation( String[] location) {
+        this.location = location;
+    }
+
+    public void setSalary_month_limit( int[] salary_month_limit) {
+        this.salary_month_limit = salary_month_limit;
+    }
+
+    public void setWork_experience( String[] work_experience) {
+        this.work_experience = work_experience;
+    }
+
+    public int getPage_item_id() {
+        return page_item_id;
+    }
+
+    public int getPage_items_num() {
+        return page_items_num;
+    }
+
+
+
+    public String getSearch_word() {
+        return search_word;
+    }
+
+    public void setPage_item_id(int page_item_id) {
+        this.page_item_id = page_item_id;
+    }
+
+    public void setPage_items_num(int page_items_num) {
+        this.page_items_num = page_items_num;
+    }
+
+    public void setSearch_word(String search_word) {
+        this.search_word = search_word;
+    }
+
+}
