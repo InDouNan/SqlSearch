@@ -1,0 +1,307 @@
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+@Component
+public class companyjob implements Serializable {
+    protected int id;
+    protected int blogid;
+    protected String title;
+    protected String address;
+    protected String job;
+    protected String treatment;
+    protected String requirement;
+    protected String content;
+    protected String time;
+    protected String phone;
+    protected String leader="SUCCESS";
+    protected String openid;
+    protected String date;
+    protected String datetime;
+    protected String salary;
+    protected Integer count;
+    protected double total_fee;
+    protected int shared;
+    protected int shared_max;
+    protected int look;
+
+    String education;//文凭
+    String location;//工作地点 省 市 区
+    String work_experience;//工作经验
+    String []edu;//文凭
+    String []loc;//工作地点 省 市 区
+    String []work_exp;//工作经验
+    int  salary_month_limit_start;//月薪范围
+    int  salary_month_limit_end;//月薪范围
+    String job_nature;//工作性质
+    String industry_area;//行业领域
+    String  inancing_stage;//融资阶段
+
+    public int getLook() {
+        return look;
+    }
+
+    public void setLook(int look) {
+        this.look = look;
+    }
+
+    public int getShared_max() {
+        return shared_max;
+    }
+
+    public void setShared_max(int shared_max) {
+        this.shared_max = shared_max;
+    }
+
+    public void setShared(int shared) {
+        this.shared = shared;
+    }
+
+    public int getShared() {
+        return shared;
+    }
+
+    public void setTotal_fee(double total_fee) {
+        this.total_fee = total_fee;
+    }
+
+    public double getTotal_fee() {
+        return total_fee;
+    }
+
+    public int getBlogid() {
+        return blogid;
+    }
+
+    public void setBlogid(int blogid) {
+        this.blogid = blogid;
+    }
+/*
+将标签的数组拆分，以"|"分隔储存
+*/
+    public void setLoc(String[] loc) {
+        if(loc.length==1){ this.location = loc[loc.length-1];}
+        for(int i=0;i<loc.length-1;i++)
+        this.location = loc[i]+"|";
+        this.location += loc[loc.length-1];
+
+    }
+
+    public void setEdu(String[] edu) {
+        if(edu.length==1){ this.education = edu[edu.length-1];}
+        for(int i=0;i<edu.length-1;i++){
+            this.education = edu[i]+"|";
+        this.education += edu[edu.length-1];}
+    }
+
+    public void setWork_exp(String[] work_exp) {
+        if(work_exp.length==1){ this.work_experience = work_exp[work_exp.length-1];}
+        for(int i=0;i<work_exp.length-1;i++){
+            this.work_experience = work_exp[i]+"|";
+        this.work_experience += work_exp[work_exp.length-1];}
+    }
+
+    public void setJob_nature(String job_nature) {
+        this.job_nature = job_nature;
+    }
+
+    public void setIndustry_area(String industry_area) {
+        this.industry_area = industry_area;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getWork_experience() {
+        return work_experience;
+    }
+
+    public void setInancing_stage(String inancing_stage) {
+        this.inancing_stage = inancing_stage;
+    }
+
+    public String getInancing_stage() {
+        return inancing_stage;
+    }
+
+    public String getIndustry_area() {
+        return industry_area;
+    }
+
+    public String getJob_nature() {
+        return job_nature;
+    }
+
+    public String[] getLoc() {
+        return loc;
+    }
+
+    public String[] getEdu() {
+        return edu;
+    }
+
+    public String[] getWork_exp() {
+        return work_exp;
+    }
+
+    public void setSalary_month_limit_end(int salary_month_limit_end) {
+        this.salary_month_limit_end = salary_month_limit_end;
+    }
+
+    public void setSalary_month_limit_start(int salary_month_limit_start) {
+        this.salary_month_limit_start = salary_month_limit_start;
+    }
+
+    public int getSalary_month_limit_end() {
+        return salary_month_limit_end;
+    }
+
+    public int getSalary_month_limit_start() {
+        return salary_month_limit_start;
+    }
+
+    public void setWork_experience(String work_experience) {
+        System.out.println("lei"+education);
+        this.work_exp = work_experience.split("\\|");
+
+    }
+
+    public void setEducation(String education) {
+System.out.println("lei"+education);
+        this.edu = education.split("\\|");
+    }
+
+    public void setLocation(String location) {
+        this.loc = location.split("\\|");
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public void setSalary(String salary) {
+        this.salary = salary;
+    }
+
+    public String getSalary() {
+        return salary;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+
+        this.title=title;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public String getRequirement() {
+        return requirement;
+    }
+
+    public void setRequirement(String requirement) {
+        this.requirement = requirement;
+    }
+
+    public String getTreatment() {
+        return treatment;
+    }
+
+    public void setTreatment(String treatment) {
+        this.treatment = treatment;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getLeader() {
+        return leader;
+    }
+
+    public void setLeader(String leader) {
+        this.leader = leader;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    @Override
+    public String toString() {
+        return " [id=" + id + ", time="+time+",address="+address+",openid="+openid+"]";
+    }
+}
